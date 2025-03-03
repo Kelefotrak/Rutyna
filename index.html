@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Image Rotation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vibrant.js/1.0.0/vibrant.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -13,7 +14,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #4e89ae, #43658b, #edc7b7);
         }
         canvas {
             display: block;
@@ -36,7 +36,19 @@
 
         // Load the texture for the cube
         const textureLoader = new THREE.TextureLoader();
-        const texture = textureLoader.load('./kolega z klasy.jpg'); // Ensure the file is in the same directory as this HTML file
+        const texture = textureLoader.load('./kolega z klasy.jpg', () => {
+            // Extract dominant colors using Vibrant.js
+            const img = new Image();
+            img.src = './kolega z klasy.jpg';
+            img.crossOrigin = "Anonymous";
+            img.onload = () => {
+                const vibrant = new Vibrant(img);
+                const palette = vibrant.palette;
+                if (palette) {
+                    document.body.style.background = `linear-gradient(135deg, ${palette.Vibrant.getHex()}, ${palette.Muted.getHex()}, ${palette.DarkVibrant.getHex()})`;
+                }
+            };
+        });
 
         // Create a cube with the texture on all sides
         const geometry = new THREE.BoxGeometry(2, 2, 2); // Increased size of the cube
