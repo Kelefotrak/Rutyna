@@ -27,27 +27,35 @@
 
         // Create the camera
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 2;
+        camera.position.z = 3;
 
         // Create the renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Add a texture to a plane geometry
+        // Load the texture
         const textureLoader = new THREE.TextureLoader();
         const texture = textureLoader.load('./kolega z klasy.jpg'); // Ensure the file is in the same directory as this HTML file
-        const geometry = new THREE.PlaneGeometry(1, 1);
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-        const plane = new THREE.Mesh(geometry, material);
-        scene.add(plane);
+
+        // Create a cube with the texture on all sides
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const materials = [
+            new THREE.MeshBasicMaterial({ map: texture }),
+            new THREE.MeshBasicMaterial({ map: texture }),
+            new THREE.MeshBasicMaterial({ map: texture }),
+            new THREE.MeshBasicMaterial({ map: texture }),
+            new THREE.MeshBasicMaterial({ map: texture }),
+            new THREE.MeshBasicMaterial({ map: texture })
+        ];
+        const cube = new THREE.Mesh(geometry, materials);
+        scene.add(cube);
 
         // Track mouse movement for rotation
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
 
         const toRadians = (angle) => angle * (Math.PI / 180);
-        const toDegrees = (angle) => angle * (180 / Math.PI);
 
         document.addEventListener('mousedown', (e) => {
             isDragging = true;
@@ -64,8 +72,8 @@
                     y: e.offsetY - previousMousePosition.y
                 };
 
-                plane.rotation.y += toRadians(deltaMove.x * 0.5);
-                plane.rotation.x += toRadians(deltaMove.y * 0.5);
+                cube.rotation.y += toRadians(deltaMove.x * 0.5);
+                cube.rotation.x += toRadians(deltaMove.y * 0.5);
             }
 
             previousMousePosition = {
