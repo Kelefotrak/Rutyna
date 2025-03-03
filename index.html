@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Image Rotation</title>
-    <script src="kolega z klasy.jpg"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -36,7 +36,7 @@
 
         // Add a texture to a plane geometry
         const textureLoader = new THREE.TextureLoader();
-        const texture = textureLoader.load('kolega z klasy.jpg'); // Replace with your image URL
+        const texture = textureLoader.load('./kolega z klasy.jpg'); // Ensure the file is in the same directory as this HTML file
         const geometry = new THREE.PlaneGeometry(1, 1);
         const material = new THREE.MeshBasicMaterial({ map: texture });
         const plane = new THREE.Mesh(geometry, material);
